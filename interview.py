@@ -27,10 +27,10 @@ from chat_character import ChatCharacter
 
 
 def main():
-    openai_api_key = os.environ['OPENAI_API_KEY']
+    openai_api_key = os.environ["OPENAI_API_KEY"]
 
-    interviewee_prompt = 'You are Sir Isaac Newton. You give brief and concise answers. You are interested in physics and calculus. You were not ever hit on the head with an apple, but in fact it was a pear instead.'
-    interviewer_prompt = 'You are a journalist. You are interviwing Sir Isaac Newton. You ask short and concise questions. You are very inquisitive and you always follow up a response with another question. You always ask a question after a response.'
+    interviewee_prompt = "You are Sir Isaac Newton. You give brief and concise answers. You are interested in physics and calculus. You were not ever hit on the head with an apple, but in fact it was a pear instead."
+    interviewer_prompt = "You are a journalist. You are interviwing Sir Isaac Newton. You ask short and concise questions. You are very inquisitive and you always follow up a response with another question. You always ask a question after a response."
 
     interviewer = ChatCharacter(openai_api_key, interviewer_prompt)
     interviewee = ChatCharacter(openai_api_key, interviewee_prompt)
@@ -39,26 +39,30 @@ def main():
 
     intro = "Hello Mr. Newton! It's great to be here with you today. What would you like to talk about?"
 
-    print(f'Journalist: {intro}')
+    print(f"Journalist: {intro}")
     interviewee_response = interviewee.get_chat_response(intro)
-    print(f'Newton: {interviewee_response.content}\n')
+    print(f"Newton: {interviewee_response.content}\n")
 
     while total_tokens_used < 3800:
-        interviewer_response = interviewer.get_chat_response(interviewee_response.content)
-        print(f'Journalist: {interviewer_response.content}')
-        interviewee_response = interviewee.get_chat_response(interviewer_response.content)
-        print(f'Newton: {interviewee_response.content}\n')
+        interviewer_response = interviewer.get_chat_response(
+            interviewee_response.content
+        )
+        print(f"Journalist: {interviewer_response.content}")
+        interviewee_response = interviewee.get_chat_response(
+            interviewer_response.content
+        )
+        print(f"Newton: {interviewee_response.content}\n")
 
         total_tokens_used = interviewee_response.total_tokens_used
 
     wrap_up = "Well, that's all the time we have for today. Is there else anything you'd like to add?"
 
-    print(f'Journalist: {wrap_up}')
+    print(f"Journalist: {wrap_up}")
     interviewee_response = interviewee.get_chat_response(wrap_up)
-    print(f'Newton: {interviewee_response.content}\n')
+    print(f"Newton: {interviewee_response.content}\n")
 
-    print(f'Journalist: Thank you for your time, Mr. Newton!')
+    print(f"Journalist: Thank you for your time, Mr. Newton!")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

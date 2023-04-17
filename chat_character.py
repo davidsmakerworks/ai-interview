@@ -30,11 +30,11 @@ class ChatResponse:
 
     @property
     def content(self) -> str:
-        return self._response['choices'][0]['message']['content']
+        return self._response["choices"][0]["message"]["content"]
 
     @property
     def total_tokens_used(self) -> int:
-        return self._response['usage']['total_tokens']
+        return self._response["usage"]["total_tokens"]
 
 
 class ChatCharacter:
@@ -43,9 +43,9 @@ class ChatCharacter:
 
         self._system_prompt = system_prompt
         self.reset()
-        
+
     def reset(self) -> None:
-        self._messages = [ {'role': 'system', 'content': self._system_prompt} ]
+        self._messages = [{"role": "system", "content": self._system_prompt}]
 
     @property
     def system_prompt(self) -> str:
@@ -53,19 +53,18 @@ class ChatCharacter:
 
     @system_prompt.setter
     def system_prompt(self, prompt: str) -> None:
-        if self._messages[0]['role'] == 'system':
-            self._messages[0]['content'] = prompt
+        if self._messages[0]["role"] == "system":
+            self._messages[0]["content"] = prompt
         else:
-            raise RuntimeError('Invalid structure of ChatCharacter._messages')
+            raise RuntimeError("Invalid structure of ChatCharacter._messages")
 
     def get_chat_response(self, message: str) -> ChatResponse:
-        self._messages.append({'role': 'user', 'content': message})
+        self._messages.append({"role": "user", "content": message})
 
         response = openai.ChatCompletion.create(
-            model='gpt-3.5-turbo',
-            messages=self._messages
+            model="gpt-3.5-turbo", messages=self._messages
         )
 
-        self._messages.append(response['choices'][0]['message'])
+        self._messages.append(response["choices"][0]["message"])
 
         return ChatResponse(response)
